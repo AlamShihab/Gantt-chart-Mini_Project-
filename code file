@@ -1,0 +1,42 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+
+# Define the tasks and their start and end dates
+tasks = [
+    {"Task": "Proposal Writing", "Start": "2024-06-01", "End": "2024-06-16"},
+    {"Task": "Proposal Submission", "Start": "2024-06-17", "End": "2024-06-17"},
+    {"Task": "Systematic Review", "Start": "2024-06-18", "End": "2024-07-4"},
+    {"Task": "Data Collection and Preparation", "Start": "2024-07-5", "End": "2024-07-14"},
+    {"Task": "Interim Progress Report (IPR)", "Start": "2024-07-15", "End": "2024-07-15"},
+    {"Task": "Model Training", "Start": "2024-07-15", "End": "2024-07-30"},
+    {"Task": "Model Evaluation", "Start": "2024-07-31", "End": "2024-08-07"},
+    {"Task": "Hyperparameter Tuning and Ensemble Methods", "Start": "2024-08-08", "End": "2024-08-15"},
+    {"Task": "Final Project Report Writing", "Start": "2024-07-30", "End": "2024-08-30"},
+    {"Task": "Final Project Report Submission", "Start": "2024-09-2", "End": "2024-09-2"}
+]
+# Convert to DataFrame
+df = pd.DataFrame(tasks)
+
+# Convert date strings to datetime
+df['Start'] = pd.to_datetime(df['Start'])
+df['End'] = pd.to_datetime(df['End'])
+
+# Plotting the Gantt chart
+fig, ax = plt.subplots(figsize=(12, 8))
+
+# Create a bar for each task
+for idx, task in df.iterrows():
+    ax.barh(task['Task'], (task['End'] - task['Start']).days, left=task['Start'], color='skyblue', edgecolor='black')
+
+# Format the x-axis to show dates
+ax.xaxis.set_major_locator(mdates.WeekdayLocator(interval=1))
+ax.xaxis.set_major_formatter(mdates.DateFormatter("%d-%m-%Y"))
+plt.xticks(rotation=45)
+plt.xlabel('Date')
+plt.ylabel('Tasks')
+plt.title('Gantt Chart')
+plt.grid(True)
+
+plt.tight_layout()
+plt.show()
